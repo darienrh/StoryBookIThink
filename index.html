@@ -45,8 +45,8 @@
             box-shadow: 10px 10px 0px rgba(0,0,0,0.08);
             position: relative;
         }
-
-        .book-trigger {
+/*
+        .book-trigger-drawn img {
             border: 4px solid var(--ink-color);
             border-radius: 20px 255px 20px 255px/255px 20px 255px 20px;
             background: #fff;
@@ -58,7 +58,15 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             position: relative;
         }
+*/
+        .book-trigger-drawn img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
 
+        
         .book-trigger:hover {
             transform: scale(1.02) rotate(-1deg);
             box-shadow: 5px 5px 0px var(--ink-color);
