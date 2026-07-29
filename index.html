@@ -40,14 +40,14 @@
             width: 92%;
             margin: 0 auto;
             display: grid;
-    /* Adjusts columns: 55% for the book, 20% for each playlist, plus spacing */
+
             grid-template-columns: 2.5fr 1fr 1fr; 
             gap: 30px;
             background: #fff;
             box-shadow: 10px 10px 0px rgba(0,0,0,0.05);
             position: relative;
             box-sizing: border-box;
-            align-items: center; /* Vertically aligns book and playlists */
+            align-items: center; 
         }
 /*
         .book-trigger-drawn {
@@ -334,7 +334,7 @@
     </div>
 
     <script>
-        // Opening / Closing Scrapbook Overlays with Clean Transform Modifiers
+        // Opening / Closing Scrapbook
         function openScrapbook() {
             const overlay = document.getElementById('scrapbookOverlay');
             overlay.style.display = 'flex';
@@ -348,7 +348,7 @@
             overlay.classList.remove('active');
             setTimeout(() => {
                 overlay.style.display = 'none';
-            }, 400); // Matches smooth cubic-bezier transitions
+            }, 400); 
         }
 
         // Handles local image inserts dynamically into polaroid frames
