@@ -10,8 +10,8 @@
     
     <style>
         :root {
-            /* Changed to transparent/tinted wine red */
-            --bg-color: rgba(114, 47, 55, 0.15); 
+            /* Changing base background to tinted wine red */
+            --bg-color: rgba(114, 47, 55, 0.1); 
             --ink-color: #1a1a1a;
             --hand-font: 'Architects Daughter', cursive;
             --title-font: 'Caveat', cursive;
@@ -20,7 +20,7 @@
         body {
             margin: 0;
             padding: 20px;
-            background-color: var(--bg-color);
+            background-color: var(--bg-color); /* Tinted Wine Red everywhere */
             color: var(--ink-color);
             font-family: var(--hand-font);
             display: flex;
@@ -31,7 +31,7 @@
             overflow-x: hidden;
         }
 
-        /* Main Container - Upgraded for a Bigger n Wider Layout */
+        /* Main Container - Preservation */
         .sketch-container {
             border: 6px solid var(--ink-color);
             border-radius: 20px 15px 30px 15px/15px 30px 15px 20px;
@@ -46,7 +46,7 @@
             box-shadow: 10px 10px 0px rgba(0,0,0,0.05);
             position: relative;
             box-sizing: border-box;
-            align-items: center; 
+            align-items: center;
         }
 
         .book-trigger-drawn img {
@@ -54,15 +54,14 @@
             height: auto;
             display: block;
             object-fit: contain;
-            cursor: pointer;
-            transition: transform 0.2s ease;
+            cursor: pointer; /* Ensure cover is clickable */
         }
-
+        
         .book-trigger-drawn img:hover {
             transform: scale(1.02) rotate(-1deg);
         }
 
-        /* Playlist Columns */
+        /* Playlist Columns - Preservation */
         .playlist-column {
             display: flex;
             flex-direction: column;
@@ -87,17 +86,17 @@
             flex-direction: column;
             flex: 1;
             min-height: 450px; 
-            background: transparent; 
+            background: transparent;
         }
 
         .spotify-wrapper iframe {
             border: none;
             width: 100%;
             flex: 1;
-            min-height: 450px; 
+            min-height: 450px;
         }
 
-        /* Background Music Controls */
+        /* Background Music Controls - Preservation */
         .audio-player {
             position: absolute;
             bottom: 10px;
@@ -121,14 +120,17 @@
             background: #eee;
         }
 
-        /* Fullscreen Scrapbook Overlay */
+        /* Fullscreen Scrapbook Overlay - Revamped for Tinted Wine Red */
         .scrapbook-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(252, 250, 242, 0.98);
+            /* Light tinted paper-like background *behind* the wine red outside tint? 
+               User asked for wine red outside. I will make the overlay tint wine red too, 
+               consistent with the body. The *book* pages themselves are white. */
+            background: var(--bg-color); /* Matches the body tint for consistency outside the book */
             z-index: 1000;
             display: none;
             justify-content: center;
@@ -142,11 +144,11 @@
             opacity: 1;
         }
 
-        /* The Interactive Book UI */
+        /* The Interactive Book UI - White book pages preserve book feel */
         .open-book {
             width: 85%;
             height: 80%;
-            background: #fff;
+            background: #fff; /* Paper-like white *within* the book */
             border: 5px solid var(--ink-color);
             border-radius: 10px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
@@ -161,7 +163,7 @@
             transform: scale(1) rotateX(0deg);
         }
 
-        /* Book Spine/Center Crease */
+        /* Book Spine/Center Crease - Preservation */
         .open-book::before {
             content: '';
             position: absolute;
@@ -187,13 +189,14 @@
             border-right: 2px dashed rgba(0,0,0,0.1);
         }
 
+        /* Right Page - Flexible container for stacked pages and navigation */
         .right-page {
             border-left: 2px dashed rgba(0,0,0,0.1);
             display: flex;
-            flex-direction: column;
+            flex-direction: column; /* Stack gallery pages container and pagination below */
         }
 
-        /* Hand-Drawn Close Button */
+        /* Hand-Drawn Close Button - Preservation */
         .close-btn {
             position: absolute;
             top: 20px;
@@ -209,49 +212,37 @@
             transform: scale(1.1);
         }
 
-        /* Pagination Grid Logic */
+        /* Container for stacked gallery pages */
+        .gallery-page-container {
+            position: relative;
+            flex: 1; /* Occupy remaining vertical space */
+        }
+
+        /* Individual Gallery Pages - Hidden and Transparent by Default */
         .gallery-page {
-            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 20px;
             margin-top: 20px;
+            opacity: 0;
+            z-index: 1; /* Stacked below active page */
+            transition: opacity 0.5s ease; /* Smooth transition */
+            pointer-events: none; /* Prevent interaction when hidden */
         }
 
+        /* Active Page is Visible and Interactive */
         .gallery-page.active {
-            display: grid;
+            opacity: 1;
+            z-index: 10; /* Stacked above hidden pages */
+            pointer-events: auto; /* Re-enable interaction */
         }
 
-        /* Pagination Controls */
-        .pagination-controls {
-            display: flex;
-            justify-content: space-between;
-            margin-top: auto; /* Pushes buttons to the bottom of the page */
-            padding-top: 20px;
-        }
-
-        .pagination-controls button {
-            background: none;
-            border: 3px solid var(--ink-color);
-            border-radius: 20px 5px 20px 5px/5px 20px 5px 20px;
-            font-family: var(--title-font);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 5px 20px;
-            transition: all 0.2s;
-        }
-
-        .pagination-controls button:hover:not(:disabled) {
-            background: #eee;
-            transform: scale(1.05);
-        }
-
-        .pagination-controls button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            border-color: #999;
-        }
-
-        /* Polaroid/Hand-drawn Photo Frames */
+        /* Polaroid/Hand-drawn Photo Frames - Preservation */
         .photo-frame {
             background: #fff;
             padding: 10px 10px 30px 10px;
@@ -274,7 +265,38 @@
             border: 2px solid var(--ink-color);
         }
 
-        /* Responsive adjustments */
+        /* Pagination Arrows - Stylable characters */
+        .pagination-controls {
+            display: flex;
+            justify-content: center; /* Center the arrows horizontally */
+            margin-top: auto; /* Push to the bottom of the right page */
+            padding-top: 10px;
+            font-family: var(--hand-font);
+            font-size: 1.2rem;
+            gap: 10px;
+        }
+
+        .pagination-controls button {
+            background: none;
+            border: none;
+            color: var(--ink-color);
+            font-family: inherit;
+            font-size: 1.5rem; /* Larger arrows */
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: color 0.2s;
+        }
+        
+        .pagination-controls button:hover:not([disabled]) {
+            color: maroon; /* Hint of wine red on hover for arrows too */
+        }
+        
+        .pagination-controls button[disabled] {
+            opacity: 0.3; /* Style for disabled arrows */
+            cursor: not-allowed;
+        }
+
+        /* Responsive adjustments - Preservation */
         @media (max-width: 768px) {
             .sketch-container {
                 grid-template-columns: 1fr;
@@ -334,29 +356,32 @@
             <div class="book-page right-page">
                 <h3 style="font-family: var(--title-font); font-size: 2.5rem; margin-top: 0;">The Gallery</h3>
                 
-                <div class="gallery-page active" id="gallery-page-1">
-                    <div class="photo-frame" style="--r: -3deg;">
-                        <img src="IMG_2847.JPG" alt="Scrapbook Memory 1">
+                <div class="gallery-page-container">
+                    <div class="gallery-page active" id="gallery-grid-1">
+                        <div class="photo-frame" style="--r: -3deg;">
+                            <img src="IMG_2847.JPG" alt="Scrapbook Memory 1">
+                        </div>
+                        <div class="photo-frame" style="--r: 4deg;">
+                            <img src="IMG_2857.JPG" alt="Scrapbook Memory 2">
+                        </div>
+                        <div class="photo-frame" style="--r: -2deg;">
+                            <img src="IMG_2901.JPG" alt="Scrapbook Memory 3">
+                        </div>
                     </div>
-                    <div class="photo-frame" style="--r: 4deg;">
-                        <img src="IMG_2857.JPG" alt="Scrapbook Memory 2">
-                    </div>
-                    <div class="photo-frame" style="--r: -2deg;">
-                        <img src="IMG_2901.JPG" alt="Scrapbook Memory 3">
-                    </div>
-                </div>
 
-                <div class="gallery-page" id="gallery-page-2">
-                    <div class="photo-frame" style="--r: 2deg;">
-                        <img src="IMG_2917.JPG" alt="Scrapbook Memory 4">
-                    </div>
-                    <div class="photo-frame" style="--r: -4deg;">
-                        <img src="IMG_2931.jpg" alt="Scrapbook Memory 5">
+                    <div class="gallery-page" id="gallery-grid-2">
+                        <div class="photo-frame" style="--r: 2deg;">
+                            <img src="IMG_2917.JPG" alt="Scrapbook Memory 4">
+                        </div>
+                        <div class="photo-frame" style="--r: -4deg;">
+                            <img src="IMG_2931.jpg" alt="Scrapbook Memory 5">
+                        </div>
                     </div>
                 </div>
 
                 <div class="pagination-controls">
                     <button id="prevBtn" onclick="changePage(-1)" disabled>← Back</button>
+                    <span>|</span>
                     <button id="nextBtn" onclick="changePage(1)">Next →</button>
                 </div>
 
@@ -365,7 +390,7 @@
     </div>
 
     <script>
-        // Opening / Closing Scrapbook Overlays
+        // Opening / Closing Scrapbook Overlays with Clean Transform Modifiers - Preservation
         function openScrapbook() {
             const overlay = document.getElementById('scrapbookOverlay');
             overlay.style.display = 'flex';
@@ -379,37 +404,53 @@
             overlay.classList.remove('active');
             setTimeout(() => {
                 overlay.style.display = 'none';
-            }, 400); 
+            }, 400); // Matches smooth cubic-bezier transitions
         }
 
         // Pagination Logic
         let currentPage = 1;
-        const totalPages = 2; // Change this number if you add a 3rd page later!
+        const totalPages = 2; // Total number of gallery pages
 
         function changePage(direction) {
-            // Hide current page
-            document.getElementById(`gallery-page-${currentPage}`).classList.remove('active');
+            // Calculate new page number
+            let newPage = currentPage + direction;
             
-            // Update page number
-            currentPage += direction;
+            // Ensure page is within bounds
+            if (newPage < 1) newPage = 1;
+            if (newPage > totalPages) newPage = totalPages;
+
+            // Update current page number variable
+            currentPage = newPage;
             
-            // Show new page
-            document.getElementById(`gallery-page-${currentPage}`).classList.add('active');
+            // Update page visibility with smooth transition
+            updatePageVisibility();
             
-            // Update buttons
-            document.getElementById('prevBtn').disabled = currentPage === 1;
-            document.getElementById('nextBtn').disabled = currentPage === totalPages;
+            // Handle arrow enabling/disabling
+            document.getElementById('prevBtn').disabled = (currentPage === 1);
+            document.getElementById('nextBtn').disabled = (currentPage === totalPages);
         }
 
-        // Handles local image inserts dynamically (Now targets the ACTIVE page)
+        function updatePageVisibility() {
+            // Hide all pages
+            document.querySelectorAll('.gallery-page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the current page
+            document.getElementById('gallery-grid-' + currentPage).classList.add('active');
+        }
+
+        // Handles local image inserts dynamically (Adjusted for pagination)
         function handleImageUpload(event) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                // Find whichever page the user is currently looking at
-                const activePage = document.querySelector('.gallery-page.active');
+                // Determine which page to insert into - let's stick to inserting into the active grid page
+                const activeGrid = document.getElementById('gallery-grid-' + currentPage);
                 
+                // Create custom picture polaroid frame element wrapper
                 const frame = document.createElement('div');
                 frame.className = 'photo-frame';
+                // Assign a randomized hand drawn tilt offset
                 const randomRotation = (Math.random() * 8 - 4).toFixed(1) + 'deg';
                 frame.style.setProperty('--r', randomRotation);
 
@@ -417,12 +458,13 @@
                 img.src = e.target.result;
 
                 frame.appendChild(img);
-                activePage.insertBefore(frame, activePage.firstChild);
+                // Dynamic insertion into currently active grid page at beginning
+                activeGrid.insertBefore(frame, activeGrid.firstChild);
             }
             reader.readAsDataURL(event.target.files[0]);
         }
 
-        // Separate Background Audio Logic Control Toggle
+        // Separate Background Audio Logic Control Toggle - Preservation
         function toggleBackgroundMusic() {
             const audio = document.getElementById('bgMusic');
             const btn = document.getElementById('audioToggle');
