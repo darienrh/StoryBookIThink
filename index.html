@@ -463,7 +463,7 @@
             }
             reader.readAsDataURL(event.target.files[0]);
         }
-
+        
         // Separate Background Audio Logic Control Toggle - Preservation
         function toggleBackgroundMusic() {
             const audio = document.getElementById('bgMusic');
@@ -482,6 +482,21 @@
                 btn.innerText = "Play";
             }
         }
+        /*
+        to make new page
+        <div class="gallery-page" id="gallery-grid-3">
+    <div class="photo-frame" style="--r: -3deg;">
+        <img src="YOUR_NEW_IMAGE.jpg" alt="Scrapbook Memory">
+    </div>
+</div>
+
+to add new image:
+
+<div class="photo-frame" style="--r: 3deg;">
+    <img src="YOUR_NEW_IMAGE.jpg" alt="Scrapbook Memory">
+</div>
+        */
+       
     </script>
 </body>
 </html>
